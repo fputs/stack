@@ -15,8 +15,14 @@ func TestStackPush(t *testing.T) {
 	s.Push(2)
 	s.Push(10)
 
-	assert.Equal(t, s.Peek(), 10)
-	assert.Equal(t, *s.PeekPtr(), 10)
+	p, err := s.Peek()
+	assert.Equal(t, p, 10)
+	assert.NoError(t, err)
+
+	pp, err := s.PeekPtr()
+	assert.NotNil(t, pp)
+	assert.NoError(t, err)
+	assert.Equal(t, *pp, 10)
 }
 
 func TestStackPop(t *testing.T) {
@@ -25,14 +31,25 @@ func TestStackPop(t *testing.T) {
 	s.Push(10)
 
 	x, err := s.Pop()
-	assert.NotNil(t, x)
 	assert.NoError(t, err)
-	assert.Equal(t, *x, 10)
+	assert.Equal(t, x, 10)
+
+	y, err := s.PopPtr()
+	assert.NotNil(t, y)
+	assert.NoError(t, err)
+	assert.Equal(t, *y, 2)
 }
 
 func TestStackPopEmpty(t *testing.T) {
 	s := NewStack[int]()
 	x, err := s.Pop()
+	assert.Error(t, err)
+	assert.Zero(t, x)
+}
+
+func TestStackPopPtrEmpty(t *testing.T) {
+	s := NewStack[int]()
+	x, err := s.PopPtr()
 	assert.Error(t, err)
 	assert.Nil(t, x)
 }
@@ -53,17 +70,22 @@ func TestStackComplete(t *testing.T) {
 	s.Push(3)
 
 	assert.Equal(t, s.Size(), 3)
-	x := s.Peek()
+	x, err := s.Peek()
+	assert.NoError(t, err)
 	assert.Equal(t, 3, x)
 
-	y := s.PeekPtr()
+	y, err := s.PeekPtr()
 	assert.NotNil(t, y)
+	assert.NoError(t, err)
 	assert.Equal(t, 3, *y)
 
 	z, err := s.Pop()
 	assert.NoError(t, err)
-	assert.Equal(t, *z, 3)
-	assert.Equal(t, s.Peek(), 2)
+	assert.Equal(t, z, 3)
+
+	p, err := s.Peek()
+	assert.NoError(t, err)
+	assert.Equal(t, p, 2)
 	assert.Equal(t, s.Size(), 2)
 
 	s.Clear()

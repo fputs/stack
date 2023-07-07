@@ -23,7 +23,18 @@ func (s *Stack[T]) Size() int {
 	return s.size
 }
 
-func (s *Stack[T]) Pop() (*T, error) {
+func (s *Stack[T]) Pop() (T, error) {
+	if s.size == 0 {
+		var t T
+		return t, fmt.Errorf("tried to pop empty stack")
+	}
+	t := s.arr[s.size-1]
+	s.arr = s.arr[:s.size-1]
+	s.size--
+	return t, nil
+}
+
+func (s *Stack[T]) PopPtr() (*T, error) {
 	if s.size == 0 {
 		return nil, fmt.Errorf("tried to pop empty stack")
 	}
@@ -38,11 +49,18 @@ func (s *Stack[T]) Push(t T) {
 	s.size++
 }
 
-func (s *Stack[T]) Peek() T {
+func (s *Stack[T]) Peek() (T, error) {
+	if s.size == 0 {
+		var t T
+		return t, fmt.Errorf("tried to peek empty stack")
+	}
 	t := s.arr[s.size-1]
-	return t
+	return t, nil
 }
 
-func (s *Stack[T]) PeekPtr() *T {
-	return &(s.arr[s.size-1])
+func (s *Stack[T]) PeekPtr() (*T, error) {
+	if s.size == 0 {
+		return nil, fmt.Errorf("tried to peek empty stack")
+	}
+	return &(s.arr[s.size-1]), nil
 }
