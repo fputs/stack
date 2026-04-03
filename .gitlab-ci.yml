@@ -1,9 +1,0 @@
-image: golang:alpine3.18
-
-build:
-  script:
-    - go build
-
-test:
-  script:
-    - go test

@@ -1,17 +1,18 @@
 package stack
 
 import (
-	"github.com/stretchr/testify/assert"
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
 func TestNewStack(t *testing.T) {
-	s := NewStack[int]()
+	s := New[int]()
 	assert.NotNil(t, s)
 }
 
 func TestStackPush(t *testing.T) {
-	s := NewStack[int]()
+	s := New[int]()
 	s.Push(2)
 	s.Push(10)
 
@@ -26,9 +27,7 @@ func TestStackPush(t *testing.T) {
 }
 
 func TestStackPop(t *testing.T) {
-	s := NewStack[int]()
-	s.Push(2)
-	s.Push(10)
+	s := New[int](2, 10)
 
 	x, err := s.Pop()
 	assert.NoError(t, err)
@@ -41,21 +40,21 @@ func TestStackPop(t *testing.T) {
 }
 
 func TestStackPopEmpty(t *testing.T) {
-	s := NewStack[int]()
+	s := New[int]()
 	x, err := s.Pop()
 	assert.Error(t, err)
 	assert.Zero(t, x)
 }
 
 func TestStackPopPtrEmpty(t *testing.T) {
-	s := NewStack[int]()
+	s := New[int]()
 	x, err := s.PopPtr()
 	assert.Error(t, err)
 	assert.Nil(t, x)
 }
 
 func TestStackClear(t *testing.T) {
-	s := NewStack[int]()
+	s := New[int]()
 	s.Push(10)
 	s.Push(11)
 	assert.Equal(t, s.Size(), 2)
@@ -64,9 +63,7 @@ func TestStackClear(t *testing.T) {
 }
 
 func TestStackComplete(t *testing.T) {
-	s := NewStack[int]()
-	s.Push(1)
-	s.Push(2)
+	s := New[int](1, 2)
 	s.Push(3)
 
 	assert.Equal(t, s.Size(), 3)

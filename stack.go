@@ -7,7 +7,14 @@ type Stack[T any] struct {
 	size int
 }
 
-func NewStack[T any]() *Stack[T] {
+func New[T any](values ...T) *Stack[T] {
+	if len(values) > 0 {
+		return &Stack[T]{
+			arr:  values,
+			size: len(values),
+		}
+	}
+
 	return &Stack[T]{
 		arr:  make([]T, 0),
 		size: 0,
