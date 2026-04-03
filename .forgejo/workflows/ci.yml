@@ -5,6 +5,7 @@ jobs:
     runs-on: docker
     container: golang:alpine
     steps:
+      - run: apk add --no-cache git nodejs
       - uses: actions/checkout@v4
       - run: go build ./...
       - run: go test ./...
