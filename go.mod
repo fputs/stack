@@ -1,4 +1,4 @@
-module git.burkey.co/eburk/stack
+module github.com/fputs/stack
 
 go 1.20
 
